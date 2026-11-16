@@ -70,7 +70,7 @@ fun CUnitApp(vm: MainViewModel) {
         // 玻璃底部导航
         GlassBottomBar(
             backdrop = backdrop,
-            selected = tab,
+            selectedTabIndex = { tab }, // 必须读 Compose 状态，官方组件靠 snapshotFlow 观察
             onSelect = { tab = it },
             modifier = Modifier.align(Alignment.BottomCenter)
         )
@@ -80,13 +80,13 @@ fun CUnitApp(vm: MainViewModel) {
 @Composable
 private fun GlassBottomBar(
     backdrop: LayerBackdrop,
-    selected: Int,
+    selectedTabIndex: () -> Int,
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     // 官方 LiquidBottomTabs 组件：整条玻璃胶囊栏 + 栏内折射高亮胶囊（可拖拽切换）
     LiquidBottomTabs(
-        selectedTabIndex = { selected },
+        selectedTabIndex = selectedTabIndex,
         onTabSelected = onSelect,
         backdrop = backdrop,
         tabsCount = Tab.entries.size,
