@@ -63,7 +63,7 @@ fun LiquidBottomTabs(
     backdrop: Backdrop,
     tabsCount: Int,
     modifier: Modifier = Modifier,
-    containerAlpha: Float = 0.12f,
+    containerAlpha: Float = 0.05f,
     blurDp: Float = 1.2f,
     content: @Composable RowScope.() -> Unit
 ) {
