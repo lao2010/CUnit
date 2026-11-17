@@ -92,18 +92,23 @@ fun StatusPage(vm: MainViewModel, backdrop: LayerBackdrop) {
         if (topKeywords.isNotEmpty()) {
             item {
                 GlassCard(backdrop, Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp)) {
-                    Text("高频关键词", color = InverseMuted, fontSize = 13.sp, fontWeight = FontWeight.Medium)
-                    Spacer(Modifier.height(10.dp))
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        topKeywords.forEach { (word, count) ->
-                            Text(
-                                "$word ×$count",
-                                color = Inverse,
-                                fontSize = 13.sp,
-                                modifier = Modifier
-                                    .background(Color.White.copy(alpha = 0.10f), RoundedCornerShape(50))
-                                    .padding(horizontal = 10.dp, vertical = 5.dp)
-                            )
+                    Column {
+                        Text("高频关键词", color = InverseMuted, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+                        Spacer(Modifier.height(10.dp))
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            topKeywords.forEach { (word, count) ->
+                                Text(
+                                    "$word ×$count",
+                                    color = Inverse,
+                                    fontSize = 13.sp,
+                                    modifier = Modifier
+                                        .background(Color.White.copy(alpha = 0.10f), RoundedCornerShape(50))
+                                        .padding(horizontal = 10.dp, vertical = 5.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -168,8 +173,12 @@ private fun StatCard(
     label: String
 ) {
     GlassCard(backdrop, modifier, shape = RoundedCornerShape(24.dp), contentPadding = 16.dp) {
-        Text(value, color = Inverse, fontSize = 26.sp, fontWeight = FontWeight.Bold)
-        Text(label, color = InverseMuted, fontSize = 12.sp)
+        // GlassCard 内容容器是 Box，必须用 Column 纵向排列，否则数字与标签重叠
+        Column {
+            Text(value, color = Inverse, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            Spacer(Modifier.height(4.dp))
+            Text(label, color = InverseMuted, fontSize = 12.sp)
+        }
     }
 }
 
