@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -77,7 +78,10 @@ fun SettingsPage(vm: MainViewModel, backdrop: LayerBackdrop) {
                                 baseUrl = baseUrl.trim(),
                                 apiKey = apiKey.trim(),
                                 chatModel = chatModel.trim(),
-                                embeddingModel = embeddingModel.trim()
+                                embeddingModel = embeddingModel.trim(),
+                                // 保留导航栏外观调节值，避免被表单重置
+                                barAlpha = vm.settings.barAlpha,
+                                barBlurDp = vm.settings.barBlurDp
                             )
                         )
                         vm.apiTestResult = "✓ 已保存"
@@ -102,6 +106,37 @@ fun SettingsPage(vm: MainViewModel, backdrop: LayerBackdrop) {
                         result,
                         color = if (result.startsWith("✓") || result.startsWith("连接成功")) OkColor else ErrorColor,
                         fontSize = 13.sp
+                    )
+                }
+            }
+        }
+        item {
+            GlassCard(backdrop, Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp), contentPadding = 16.dp) {
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text("底部导航栏外观", color = InverseMuted, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+                    Text(
+                        "不透明度 %.2f（官方默认 0.40）".format(vm.settings.barAlpha),
+                        color = InverseFaint, fontSize = 12.sp
+                    )
+                    Slider(
+                        value = vm.settings.barAlpha,
+                        onValueChange = { vm.updateBarTuning(it, vm.settings.barBlurDp) },
+                        valueRange = 0f..0.6f
+                    )
+                    Text(
+                        "模糊 %.1f dp（官方默认 8.0）".format(vm.settings.barBlurDp),
+                        color = InverseFaint, fontSize = 12.sp
+                    )
+                    Slider(
+                        value = vm.settings.barBlurDp,
+                        onValueChange = { vm.updateBarTuning(vm.settings.barAlpha, it) },
+                        valueRange = 0f..12f
+                    )
+                    GlassButton(
+                        "恢复默认（0.12 / 1.2dp）",
+                        backdrop,
+                        onClick = { vm.updateBarTuning(0.12f, 1.2f) },
+                        height = 40.dp
                     )
                 }
             }

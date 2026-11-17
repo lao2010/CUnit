@@ -10,7 +10,10 @@ data class ApiSettings(
     val baseUrl: String = "https://open.bigmodel.cn/api/paas/v4",
     val apiKey: String = "",
     val chatModel: String = "glm-4-flash",
-    val embeddingModel: String = "embedding-3"
+    val embeddingModel: String = "embedding-3",
+    // 底部导航栏外观（设置页滑杆可调）
+    val barAlpha: Float = 0.12f,
+    val barBlurDp: Float = 1.2f
 ) {
     val isConfigured: Boolean get() = apiKey.isNotBlank()
 }

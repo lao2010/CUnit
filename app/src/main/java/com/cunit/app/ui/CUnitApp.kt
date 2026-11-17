@@ -72,6 +72,8 @@ fun CUnitApp(vm: MainViewModel) {
             backdrop = backdrop,
             selectedTabIndex = { tab }, // 必须读 Compose 状态，官方组件靠 snapshotFlow 观察
             onSelect = { tab = it },
+            containerAlpha = vm.settings.barAlpha,
+            blurDp = vm.settings.barBlurDp,
             modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
@@ -82,6 +84,8 @@ private fun GlassBottomBar(
     backdrop: LayerBackdrop,
     selectedTabIndex: () -> Int,
     onSelect: (Int) -> Unit,
+    containerAlpha: Float,
+    blurDp: Float,
     modifier: Modifier = Modifier
 ) {
     // 官方 LiquidBottomTabs 组件：整条玻璃胶囊栏 + 栏内折射高亮胶囊（可拖拽切换）
@@ -90,6 +94,8 @@ private fun GlassBottomBar(
         onTabSelected = onSelect,
         backdrop = backdrop,
         tabsCount = Tab.entries.size,
+        containerAlpha = containerAlpha,
+        blurDp = blurDp,
         modifier = modifier
             .windowInsetsPadding(WindowInsets.navigationBars)
             .padding(horizontal = 12.dp, vertical = 6.dp)

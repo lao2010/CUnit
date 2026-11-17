@@ -63,16 +63,18 @@ fun LiquidBottomTabs(
     backdrop: Backdrop,
     tabsCount: Int,
     modifier: Modifier = Modifier,
+    containerAlpha: Float = 0.12f,
+    blurDp: Float = 1.2f,
     content: @Composable RowScope.() -> Unit
 ) {
     val isLightTheme = !isSystemInDarkTheme()
     val accentColor =
         if (isLightTheme) Color(0xFF0088FF)
         else Color(0xFF0091FF)
-    // 官方默认 0.4f——磨砂感主要来源（blur 对平滑渐变背景几乎不可见）
+    // 官方默认 0.4f，此处默认 0.12f，可在设置页滑杆调节
     val containerColor =
-        if (isLightTheme) Color(0xFFFAFAFA).copy(0.12f)
-        else Color(0xFF121212).copy(0.12f)
+        if (isLightTheme) Color(0xFFFAFAFA).copy(containerAlpha)
+        else Color(0xFF121212).copy(containerAlpha)
 
     val tabsBackdrop = rememberLayerBackdrop()
 
@@ -169,7 +171,7 @@ fun LiquidBottomTabs(
                     shape = { Capsule() },
                     effects = {
                         vibrancy()
-                        blur(1.2f.dp.toPx()) // 原官方 8dp 的 15%
+                        blur(blurDp.dp.toPx())
                         lens(24f.dp.toPx(), 24f.dp.toPx())
                     },
                     layerBlock = {
@@ -207,7 +209,7 @@ fun LiquidBottomTabs(
                         effects = {
                             val progress = dampedDragAnimation.pressProgress
                             vibrancy()
-                            blur(1.2f.dp.toPx()) // 原官方 8dp 的 15%
+                            blur(blurDp.dp.toPx())
                             lens(
                                 24f.dp.toPx() * progress,
                                 24f.dp.toPx() * progress

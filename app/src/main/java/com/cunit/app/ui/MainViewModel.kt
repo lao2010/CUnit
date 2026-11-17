@@ -243,6 +243,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         settings = settingsStore.current
     }
 
+    /** 导航栏外观实时调节（设置页滑杆） */
+    fun updateBarTuning(alpha: Float, blurDp: Float) {
+        settingsStore.update(settings.copy(barAlpha = alpha, barBlurDp = blurDp))
+        settings = settingsStore.current
+    }
+
     suspend fun testApi() {
         apiTestRunning = true
         apiTestResult = null
