@@ -90,7 +90,7 @@ fun GlassCard(
                 shape = { shape },
                 effects = {
                     vibrancy()
-                    blur(6f.dp.toPx())
+                    blur(3f.dp.toPx())
                     lens(12f.dp.toPx(), 40f.dp.toPx())
                 },
                 onDrawSurface = { drawRect(Color.White.copy(alpha = 0.10f)) }
@@ -120,7 +120,7 @@ fun GlassButton(
                 shape = { shape },
                 effects = {
                     vibrancy()
-                    blur(4f.dp.toPx())
+                    blur(2f.dp.toPx())
                     lens(10f.dp.toPx(), 32f.dp.toPx())
                 },
                 onDrawSurface = {
@@ -161,17 +161,16 @@ fun GlassTextField(
                 shape = { RoundedCornerShape(18.dp) },
                 effects = {
                     vibrancy()
-                    blur(4f.dp.toPx())
+                    blur(2f.dp.toPx())
                     lens(8f.dp.toPx(), 24f.dp.toPx())
                 },
                 onDrawSurface = { drawRect(Color.White.copy(alpha = 0.10f)) }
             )
             .padding(horizontal = 14.dp, vertical = 10.dp)
     ) {
-        Column {
-            if (value.isEmpty()) {
-                Text(hint, color = InverseFaint, fontSize = 15.sp)
-            }
+        // 占位文字叠加在 BasicTextField 上（而非独立一行），
+        // 点击占位区域才能命中输入框并弹出输入法
+        Box(Modifier.fillMaxWidth()) {
             BasicTextField(
                 value = value,
                 onValueChange = onValueChange,
@@ -182,6 +181,16 @@ fun GlassTextField(
                 singleLine = singleLine,
                 modifier = Modifier.fillMaxWidth()
             )
+            if (value.isEmpty()) {
+                Text(
+                    hint,
+                    color = InverseFaint,
+                    fontSize = 15.sp,
+                    modifier = Modifier.align(
+                        if (minLines > 1) Alignment.TopStart else Alignment.CenterStart
+                    )
+                )
+            }
         }
     }
 }

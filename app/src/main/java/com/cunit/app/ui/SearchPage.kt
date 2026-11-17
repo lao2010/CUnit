@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -78,7 +79,10 @@ fun SearchPage(vm: MainViewModel, backdrop: LayerBackdrop) {
                         backdrop = backdrop,
                         onClick = { scope.launch { vm.search() } },
                         enabled = vm.searchQuery.isNotBlank() && !vm.searching,
-                        height = 46.dp
+                        height = 46.dp,
+                        // 主题蓝，与导航栏高亮一致；加宽保证"搜索"两字完整显示
+                        tint = Color(0xFF0091FF),
+                        modifier = Modifier.widthIn(min = 88.dp)
                     )
                 }
             }
