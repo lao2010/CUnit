@@ -69,9 +69,10 @@ fun LiquidBottomTabs(
     val accentColor =
         if (isLightTheme) Color(0xFF0088FF)
         else Color(0xFF0091FF)
+    // 官方默认 0.4f——磨砂感主要来源（blur 对平滑渐变背景几乎不可见）
     val containerColor =
-        if (isLightTheme) Color(0xFFFAFAFA).copy(0.4f)
-        else Color(0xFF121212).copy(0.4f)
+        if (isLightTheme) Color(0xFFFAFAFA).copy(0.12f)
+        else Color(0xFF121212).copy(0.12f)
 
     val tabsBackdrop = rememberLayerBackdrop()
 
