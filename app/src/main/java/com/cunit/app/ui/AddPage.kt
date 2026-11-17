@@ -44,7 +44,7 @@ fun AddPage(vm: MainViewModel, backdrop: LayerBackdrop) {
             .statusBarsPadding()
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 24.dp, bottom = 16.dp) // 内容延伸到导航栏底下，透字效果
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 24.dp, bottom = 96.dp) // 尾部留白=栏高：滚到底最后一项不被挡；滚动过程中内容仍从栏底穿过（透字）
     ) {
         item {
             Text("存入 C 单位", color = Inverse, fontSize = 30.sp, fontWeight = FontWeight.Bold)
