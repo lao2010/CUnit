@@ -131,7 +131,9 @@ fun AddPage(vm: MainViewModel, backdrop: LayerBackdrop) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 val canSave = vm.addNote.isNotBlank() &&
                     (vm.pendingPhoto != null || vm.pendingVideo != null || vm.addBody.isNotBlank()) &&
-                    vm.ingestPhase == IngestPhase.IDLE
+                    // 只在流水线进行中禁用；DONE/ERROR/IDLE 都允许再次保存
+                    vm.ingestPhase != IngestPhase.EXTRACTING_KEYWORDS &&
+                    vm.ingestPhase != IngestPhase.EMBEDDING
                 GlassButton(
                     label = "保存 C 单位",
                     backdrop = backdrop,
