@@ -170,9 +170,12 @@ fun LiquidBottomTabs(
                     backdrop = backdrop,
                     shape = { Capsule() },
                     effects = {
-                        vibrancy()
+                        // 低不透明度（透字模式）时跳过 vibrancy/lens 的增白提亮，只保留真实模糊
+                        if (containerAlpha >= 0.08f) {
+                            vibrancy()
+                            lens(24f.dp.toPx(), 24f.dp.toPx())
+                        }
                         blur(blurDp.dp.toPx())
-                        lens(24f.dp.toPx(), 24f.dp.toPx())
                     },
                     layerBlock = {
                         val progress = dampedDragAnimation.pressProgress
@@ -208,12 +211,14 @@ fun LiquidBottomTabs(
                         shape = { Capsule() },
                         effects = {
                             val progress = dampedDragAnimation.pressProgress
-                            vibrancy()
+                            if (containerAlpha >= 0.08f) {
+                                vibrancy()
+                                lens(
+                                    24f.dp.toPx() * progress,
+                                    24f.dp.toPx() * progress
+                                )
+                            }
                             blur(blurDp.dp.toPx())
-                            lens(
-                                24f.dp.toPx() * progress,
-                                24f.dp.toPx() * progress
-                            )
                         },
                         highlight = {
                             val progress = dampedDragAnimation.pressProgress
