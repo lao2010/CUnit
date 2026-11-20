@@ -132,12 +132,22 @@ fun SettingsPage(vm: MainViewModel, backdrop: LayerBackdrop) {
                         onValueChange = { vm.updateBarTuning(vm.settings.barAlpha, it) },
                         valueRange = 0f..12f
                     )
-                    GlassButton(
-                        "恢复默认（0.05 / 1.2dp）",
-                        backdrop,
-                        onClick = { vm.updateBarTuning(0.05f, 1.2f) },
-                        height = 40.dp
-                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        GlassButton(
+                            "墨玉玻璃",
+                            backdrop,
+                            onClick = { vm.updateBarTuning(0.40f, 5f) },
+                            modifier = Modifier.weight(1f),
+                            height = 40.dp
+                        )
+                        GlassButton(
+                            "纯透字",
+                            backdrop,
+                            onClick = { vm.updateBarTuning(0.05f, 1.2f) },
+                            modifier = Modifier.weight(1f),
+                            height = 40.dp
+                        )
+                    }
                 }
             }
         }
