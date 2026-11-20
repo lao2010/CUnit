@@ -4,9 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +26,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -38,6 +41,16 @@ import com.kyant.backdrop.effects.vibrancy
 val Inverse = Color(0xFFFFFFFF)
 val InverseMuted = Color(0xCCFFFFFF)
 val InverseFaint = Color(0x99FFFFFF)
+
+/**
+ * 页面滚动尾距 = 系统导航条高度 + 玻璃栏总高（6dp 外边距 + 64dp 栏身 + 6dp 余量）。
+ * 保证滚到底时最后一项完整停在玻璃栏上方；滚动过程中内容仍从栏底穿过（透字）。
+ */
+@Composable
+fun bottomBarTailPadding(): Dp {
+    val density = LocalDensity.current
+    return with(density) { WindowInsets.navigationBars.getBottom(density).toDp() } + 76.dp
+}
 
 /** 主题渐变背景（画在 backdrop 记录的内容里，玻璃折射才有效果） */
 @Composable

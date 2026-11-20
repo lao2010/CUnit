@@ -52,7 +52,7 @@ fun SearchPage(vm: MainViewModel, backdrop: LayerBackdrop) {
                 .statusBarsPadding()
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 24.dp, bottom = 96.dp) // 尾部留白=栏高：滚到底最后一项不被挡；滚动过程中内容仍从栏底穿过（透字）
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(top = 24.dp, bottom = bottomBarTailPadding()) // 尾距按导航条 inset 动态计算
         ) {
             item {
                 Text("语义检索", color = Inverse, fontSize = 30.sp, fontWeight = FontWeight.Bold)
