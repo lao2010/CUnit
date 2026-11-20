@@ -49,6 +49,13 @@ fun CUnitApp(vm: MainViewModel) {
             drawRect(Color(0xFF0B0C11))
             drawContent()
         }
+        // 导航栏专用 backdrop：录制整个页面（含卡片最终像素），
+        // 栏的模糊/折射才真正采样到下方内容。卡片读的是上面的 backdrop，
+        // 与 barBackdrop 读写不同层，不构成"写读同层"循环。
+        val barBackdrop = rememberLayerBackdrop {
+            drawRect(Color(0xFF0B0C11))
+            drawContent()
+        }
 
         // 只有背景渐变被记入 backdrop。
         // 官方文档（glass-bottom-sheet 教程）：玻璃元素不能出现在 layerBackdrop 的记录范围内，
@@ -57,19 +64,21 @@ fun CUnitApp(vm: MainViewModel) {
             AppBackgroundGradient()
         }
 
-        // 页面内容在记录范围之外，其中的玻璃卡片可安全读取 backdrop
-        Box(Modifier.fillMaxSize()) {
-            when (Tab.entries[tab]) {
-                Tab.Status -> StatusPage(vm, backdrop)
-                Tab.Add -> AddPage(vm, backdrop)
-                Tab.Search -> SearchPage(vm, backdrop)
-                Tab.Settings -> SettingsPage(vm, backdrop)
+        // 页面内容同时录进 barBackdrop（其中的玻璃卡片读 backdrop，读写层分离）
+        Box(Modifier.fillMaxSize().layerBackdrop(barBackdrop)) {
+            Box(Modifier.fillMaxSize()) {
+                when (Tab.entries[tab]) {
+                    Tab.Status -> StatusPage(vm, backdrop)
+                    Tab.Add -> AddPage(vm, backdrop)
+                    Tab.Search -> SearchPage(vm, backdrop)
+                    Tab.Settings -> SettingsPage(vm, backdrop)
+                }
             }
         }
 
-        // 玻璃底部导航
+        // 玻璃底部导航（读 barBackdrop：模糊/折射来自真实页面内容）
         GlassBottomBar(
-            backdrop = backdrop,
+            backdrop = barBackdrop,
             selectedTabIndex = { tab }, // 必须读 Compose 状态，官方组件靠 snapshotFlow 观察
             onSelect = { tab = it },
             containerAlpha = vm.settings.barAlpha,
